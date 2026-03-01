@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kolhapur Data</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #f9f9f9, #e3f2fd);
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kolhapur Village Dataset</h1>
+  <p style="text-align:center;color:#555;">Loading dataset... Please wait.</p>
+
+  <table id="data-table" class="display"></table>
+
+  <!-- jQuery & DataTables -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  <!-- SheetJS (for reading Excel) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+  <script>
+    // Load Excel automatically from local /data folder
+    fetch('data/kolhapurdata.xlsx')
+      .then(response => {
+        if (!response.ok) throw new Error('File not found');
+        return response.arrayBuffer();
+      })
+      .then(data => {
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        displayTable(json);
+      })
+      .catch(err => {
+        document.body.innerHTML = `<h2 style="text-align:center;color:red;">Error loading dataset: ${err.message}</h2>`;
+      });
+
+    function displayTable(data) {
+      if (data.length === 0) return;
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      let html = `<thead><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr></thead>`;
+      html += `<tbody>`;
+      rows.forEach(r => {
+        html += `<tr>${r.map(v => `<td>${v ?? ""}</td>`).join("")}</tr>`;
+      });
+      html += `</tbody>`;
+
+      document.getElementById("data-table").innerHTML = html;
+
+      $("#data-table").DataTable({
+        pageLength: 10,
+        responsive: true,
+        destroy: true
+      });
+    }
+  </script>
+</body>
+</html>

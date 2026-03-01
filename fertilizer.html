@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🌱 Fertilizer Recommendation</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        padding: 30px;
+        background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
+      }
+
+      h2 {
+        text-align: center;
+        color: #1565c0;
+        font-size: 28px;
+      }
+
+      .container {
+        max-width: 750px;
+        margin: auto;
+      }
+
+      .card {
+        background: #fff;
+        padding: 18px;
+        margin: 15px 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .param {
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #2c3e50;
+      }
+
+      .recommend {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #444;
+      }
+
+      .low {
+        color: #d32f2f;
+      }
+
+      .high {
+        color: #f57c00;
+      }
+
+      .normal {
+        color: green;
+      }
+
+      button {
+        display: block;
+        margin: 20px auto;
+        padding: 12px 20px;
+        background: #1565c0;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #0d47a1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>🌱 Fertilizer Recommendations</h2>
+    <div class="container" id="fertilizer"></div>
+    <button onclick="window.location.href='output.html'">
+      ⬅ Back to Report
+    </button>
+
+    <script>
+      let n = parseFloat(localStorage.getItem("n"));
+      let p = parseFloat(localStorage.getItem("p"));
+      let k = parseFloat(localStorage.getItem("k"));
+      let ph = parseFloat(localStorage.getItem("ph"));
+
+      let fertDiv = document.getElementById("fertilizer");
+
+      function getFertilizer(param, value, min, max, lowMsg, highMsg, goodMsg) {
+        let statusClass, msg;
+        if (value < min) {
+          statusClass = "low";
+          msg = lowMsg;
+        } else if (value > max) {
+          statusClass = "high";
+          msg = highMsg;
+        } else {
+          statusClass = "normal";
+          msg = goodMsg;
+        }
+
+        return `
+        <div class="card">
+          <div class="param">${param}: <span class="${statusClass}">${value}</span></div>
+          <div class="recommend">🌿 Recommendation: ${msg}</div>
+        </div>
+      `;
+      }
+
+      let fertHTML = "";
+
+      fertHTML += getFertilizer(
+        "Nitrogen (N)",
+        n,
+        50,
+        200,
+        "Apply Urea or Ammonium Sulphate to increase nitrogen.",
+        "Avoid nitrogen fertilizers to prevent leaf burn.",
+        "Nitrogen level is balanced. Maintain current practice."
+      );
+
+      fertHTML += getFertilizer(
+        "Phosphorus (P)",
+        p,
+        40,
+        150,
+        "Use DAP, SSP, or bone meal to improve phosphorus.",
+        "Too much phosphorus may lock micronutrients. Avoid P fertilizers.",
+        "Phosphorus is adequate for root development."
+      );
+
+      fertHTML += getFertilizer(
+        "Potassium (K)",
+        k,
+        40,
+        200,
+        "Apply MOP (Potash) or SOP to boost potassium.",
+        "Excess potassium may affect Mg and Ca uptake. Avoid K fertilizers.",
+        "Potassium is sufficient for crop yield."
+      );
+
+      fertHTML += getFertilizer(
+        "Soil pH",
+        ph,
+        5.5,
+        7.5,
+        "Soil acidic → Add lime (CaCO₃).",
+        "Soil alkaline → Add gypsum, organic matter, or sulphur.",
+        "Soil pH is crop-friendly."
+      );
+
+      fertDiv.innerHTML = fertHTML;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🌾 Smart Farming Report</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        padding: 30px;
+        background: linear-gradient(135deg, #f0fff4, #e6ffe6);
+      }
+
+      h2 {
+        text-align: center;
+        color: #2e7d32;
+        font-size: 30px;
+      }
+
+      .container {
+        max-width: 750px;
+        margin: auto;
+      }
+
+      .card {
+        background: #fff;
+        padding: 18px;
+        margin: 15px 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .param {
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      .normal {
+        color: green;
+      }
+
+      .low {
+        color: #d32f2f;
+      }
+
+      .high {
+        color: #f57c00;
+      }
+
+      .suggestion {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #444;
+      }
+
+      .emoji {
+        font-size: 20px;
+        margin-right: 6px;
+      }
+      /* 🔹 Button styles */
+
+      .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 25px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        background: #2e7d32;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #1b5e20;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>🌾 Smart Farming Report 🌱</h2>
+    <div class="container" id="report"></div>
+
+    <!-- Buttons in one line -->
+    <div class="btn-container">
+      <button class="btn" onclick="window.location.href='form.html'">
+        🔄 Enter New Data
+      </button>
+      <!-- Updated Download button -->
+      <button class="btn" onclick="downloadReport()">⬇️ Download</button>
+      <button class="btn" onclick="window.location.href='fertilizer.html'">
+        🌱 Fertilizer Recommendation
+      </button>
+    </div>
+
+    <script>
+      // Fetch values
+      let n = parseFloat(localStorage.getItem("n"));
+      let p = parseFloat(localStorage.getItem("p"));
+      let k = parseFloat(localStorage.getItem("k"));
+      let temp = parseFloat(localStorage.getItem("temp"));
+      let humidity = parseFloat(localStorage.getItem("humidity"));
+      let ph = parseFloat(localStorage.getItem("ph"));
+      let rain = parseFloat(localStorage.getItem("rain"));
+
+      let reportDiv = document.getElementById("report");
+
+      function checkRange(
+        value,
+        min,
+        max,
+        name,
+        emoji,
+        lowMsg,
+        highMsg,
+        goodMsg
+      ) {
+        let statusClass, msg;
+        if (value < min) {
+          statusClass = "low";
+          msg = lowMsg;
+        } else if (value > max) {
+          statusClass = "high";
+          msg = highMsg;
+        } else {
+          statusClass = "normal";
+          msg = goodMsg;
+        }
+
+        return `
+          <div class="card">
+            <div class="param">${emoji} ${name}: <span class="${statusClass}">${value}</span></div>
+            <div class="suggestion">💡 Suggestion: ${msg}</div>
+          </div>
+        `;
+      }
+
+      let reportHTML = "";
+      reportHTML += checkRange(
+        n,
+        50,
+        200,
+        "Nitrogen (N)",
+        "🌿",
+        "Apply nitrogen-rich fertilizers like Urea/Ammonium Sulphate.",
+        "Reduce nitrogen fertilizers to avoid burning crops.",
+        "Nitrogen level is healthy for crop growth."
+      );
+      reportHTML += checkRange(
+        p,
+        40,
+        150,
+        "Phosphorus (P)",
+        "🍂",
+        "Apply fertilizers like DAP or bone meal to boost root growth.",
+        "Excess P may block micronutrient absorption. Reduce P fertilizers.",
+        "Phosphorus level is ideal for strong roots."
+      );
+      reportHTML += checkRange(
+        k,
+        40,
+        200,
+        "Potassium (K)",
+        "🥔",
+        "Use Potash (MOP/SOP) fertilizers to improve flowering & yield.",
+        "Too much potassium may reduce Mg & Ca uptake. Reduce K input.",
+        "Potassium level supports healthy crop yield."
+      );
+      reportHTML += checkRange(
+        temp,
+        15,
+        35,
+        "Temperature (°C)",
+        "🌡️",
+        "Temperature too low → Grow Wheat/Barley, provide polyhouse cover.",
+        "Too hot → Suitable for Millet, Cotton. Ensure irrigation.",
+        "Temperature is suitable for most crops."
+      );
+      reportHTML += checkRange(
+        humidity,
+        30,
+        90,
+        "Humidity (%)",
+        "💧",
+        "Low humidity → Increase irrigation frequency.",
+        "High humidity → Watch for fungal diseases, apply fungicides.",
+        "Humidity level is balanced."
+      );
+      reportHTML += checkRange(
+        ph,
+        5.5,
+        7.5,
+        "Soil pH",
+        "⚖️",
+        "Soil is acidic → Add lime (CaCO₃) to neutralize.",
+        "Soil is alkaline → Add organic matter, gypsum, or elemental sulphur.",
+        "Soil pH is suitable for most crops."
+      );
+      reportHTML += checkRange(
+        rain,
+        50,
+        300,
+        "Rainfall (mm)",
+        "🌦️",
+        "Low rainfall → Irrigation support is required.",
+        "Too much rainfall → Improve drainage, avoid waterlogging.",
+        "Rainfall is good for healthy crops."
+      );
+
+      reportDiv.innerHTML = reportHTML;
+
+      // Download function
+      function downloadReport() {
+        // Get the text content of the report (no HTML tags)
+        let reportText = reportDiv.innerText;
+
+        // Create a blob of the report content
+        let blob = new Blob([reportText], { type: "text/plain" });
+
+        // Create a temporary link to trigger download
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "smart_farming_report.txt";
+
+        document.body.appendChild(link);
+        link.click();
+
+        // Cleanup
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      }
+    </script>
+  </body>
+</html>

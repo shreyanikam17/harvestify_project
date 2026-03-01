@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🌱 Smart Farming Input</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f4f7f6;
+        /* light clean background */
+      }
+
+      .container {
+        background: #fff;
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        max-width: 500px;
+        width: 100%;
+        animation: fadeIn 1s ease;
+      }
+
+      h1 {
+        color: #1f5c1f;
+        text-align: center;
+        font-size: 30px;
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin: 14px 0 6px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .range {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 6px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: 0.3s;
+      }
+
+      input:focus {
+        border-color: #1f5c1f;
+        outline: none;
+        box-shadow: 0 0 8px #90ee90;
+      }
+
+      .status {
+        font-size: 0.9em;
+        margin-top: 4px;
+      }
+
+      .ok {
+        color: green;
+        font-weight: bold;
+      }
+
+      .warn {
+        color: red;
+        font-weight: bold;
+      }
+
+      button {
+        width: 100%;
+        margin-top: 25px;
+        padding: 12px;
+        background: #1f5c1f;
+        color: #fff;
+        font-size: 17px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #144014;
+      }
+
+      .progress {
+        margin-top: 18px;
+        height: 12px;
+        background: #e0e0e0;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #43a047, #1f5c1f);
+        transition: width 0.4s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🌾 Smart Farming Data Entry 🌱</h1>
+
+      <form onsubmit="saveData(event)">
+        <label>🌿 Nitrogen (N):</label>
+        <div class="range">Valid: 0 → 500 mg/kg</div>
+        <input type="number" id="n" required oninput="checkValue(this,0,500)" />
+        <div class="status" id="n-status"></div>
+
+        <label>🍂 Phosphorus (P):</label>
+        <div class="range">Valid: 0 → 300 mg/kg</div>
+        <input type="number" id="p" required oninput="checkValue(this,0,300)" />
+        <div class="status" id="p-status"></div>
+
+        <label>🥔 Potassium (K):</label>
+        <div class="range">Valid: 0 → 500 mg/kg</div>
+        <input type="number" id="k" required oninput="checkValue(this,0,500)" />
+        <div class="status" id="k-status"></div>
+
+        <label>🌡️ Temperature (°C):</label>
+        <div class="range">Valid: -10 → 60 °C</div>
+        <input
+          type="number"
+          id="temp"
+          required
+          oninput="checkValue(this,-10,60)"
+        />
+        <div class="status" id="temp-status"></div>
+
+        <label>💧 Humidity (%):</label>
+        <div class="range">Valid: 0 → 100 %</div>
+        <input
+          type="number"
+          id="humidity"
+          required
+          oninput="checkValue(this,0,100)"
+        />
+        <div class="status" id="humidity-status"></div>
+
+        <label>⚖️ Soil pH:</label>
+        <div class="range">Valid: 1 → 14</div>
+        <input
+          type="number"
+          step="0.1"
+          id="ph"
+          required
+          oninput="checkValue(this,1,14)"
+        />
+        <div class="status" id="ph-status"></div>
+
+        <label>🌦️ Rainfall (mm):</label>
+        <div class="range">Valid: 0 → 1000 mm</div>
+        <input
+          type="number"
+          id="rain"
+          required
+          oninput="checkValue(this,0,1000)"
+        />
+        <div class="status" id="rain-status"></div>
+
+        <div class="progress">
+          <div class="progress-bar" id="progress"></div>
+        </div>
+
+        <button type="submit">✅ Submit Data</button>
+      </form>
+    </div>
+
+    <script>
+      function checkValue(input, min, max) {
+        let status = document.getElementById(input.id + "-status");
+        let value = parseFloat(input.value);
+
+        if (!value && value !== 0) {
+          status.innerHTML = "";
+          return;
+        }
+
+        if (value >= min && value <= max) {
+          status.innerHTML = "✅ Value accepted";
+          status.className = "status ok";
+        } else {
+          status.innerHTML = "⚠️ Out of valid range (" + min + "–" + max + ")";
+          status.className = "status warn";
+        }
+
+        updateProgress();
+      }
+
+      function updateProgress() {
+        let inputs = document.querySelectorAll("input");
+        let filled = 0;
+        inputs.forEach((i) => {
+          if (i.value) filled++;
+        });
+        let percent = (filled / inputs.length) * 100;
+        document.getElementById("progress").style.width = percent + "%";
+      }
+
+      function saveData(e) {
+        e.preventDefault();
+        ["n", "p", "k", "temp", "humidity", "ph", "rain"].forEach((id) => {
+          localStorage.setItem(id, document.getElementById(id).value);
+        });
+        window.location.href = "output.html";
+      }
+    </script>
+  </body>
+</html>

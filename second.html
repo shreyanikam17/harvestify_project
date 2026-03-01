@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Harvestify - Select Mode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: url("https://img.freepik.com/free-photo/standard-quality-control-concept-m_23-2150041865.jpg?semt=ais_hybrid&w=740&q=80")
+          no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 100px;
+        /* better than margin-left for flexbox */
+      }
+      /* Card */
+
+      .card {
+        background: rgba(255, 255, 255, 0.15);
+        /* 🔥 transparent white */
+        padding: 60px 50px;
+        border-radius: 20px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        /* subtle border */
+        text-align: center;
+        width: 480px;
+        min-height: 440px;
+        max-width: 90%;
+        animation: fadeIn 0.6s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        backdrop-filter: blur(12px);
+        /* 🔥 glass effect */
+        -webkit-backdrop-filter: blur(12px);
+        /* Safari support */
+      }
+      /* Headings */
+
+      .card h1 {
+        margin-bottom: 15px;
+        color: #dfe1e4;
+        font-size: 2.4rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      .card p {
+        margin-bottom: 35px;
+        color: #dadce0;
+        font-size: 1.1rem;
+        line-height: 1.5;
+      }
+      /* Buttons */
+
+      .button {
+        padding: 14px 28px;
+        margin: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 180px;
+        justify-content: center;
+        text-decoration: none;
+        user-select: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      .button:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+      /* Mode buttons */
+
+      .auto-btn {
+        background: linear-gradient(135deg, #16a085, #27ae60);
+      }
+
+      .manual-btn {
+        background: linear-gradient(135deg, #2980b9, #2ecc71);
+      }
+      /* City buttons */
+
+      .city-btn {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        min-width: 160px;
+      }
+
+      .city-btn.selected {
+        background: linear-gradient(135deg, #5e3370, #7f48a5);
+        transform: scale(1.07);
+        box-shadow: 0 8px 22px rgba(142, 68, 173, 0.35);
+      }
+      /* Toast */
+
+      .toast {
+        visibility: hidden;
+        min-width: 260px;
+        background: rgba(0, 0, 0, 0.85);
+        color: #fff;
+        text-align: center;
+        border-radius: 8px;
+        padding: 12px;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(40px);
+        z-index: 999;
+        opacity: 0;
+        font-size: 0.9rem;
+        transition: all 0.4s ease;
+      }
+
+      .toast.show {
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card" id="card-container">
+      <h1 id="main-title">Harvestify</h1>
+      <p id="subtitle">Select your preferred mode to continue</p>
+
+      <div id="mode-buttons">
+        <button class="button auto-btn" onclick="showCities()">
+          <i class="fas fa-tractor"></i> Automatically
+        </button>
+
+        <a href="form.html" class="button manual-btn">
+          <i class="fas fa-keyboard"></i> Manually
+        </a>
+      </div>
+
+      <div id="city-buttons" style="display: none">
+        <a
+          href="kolhapur.html"
+          class="button city-btn"
+          onclick="confirmCity(event, 'Kolhapur')"
+          >Kolhapur</a
+        >
+        <a
+          href="sangali.html"
+          class="button city-btn"
+          onclick="confirmCity(event, 'Sangli')"
+          >Sangli</a
+        >
+        <a
+          href="satara.html"
+          class="button city-btn"
+          onclick="confirmCity(event, 'Satara')"
+          >Satara</a
+        >
+        <a
+          href="pune.html"
+          class="button city-btn"
+          onclick="confirmCity(event, 'Pune')"
+          >Pune</a
+        >
+        <br />
+        <button
+          class="button manual-btn"
+          onclick="backToModes()"
+          style="
+            margin-top: 20px;
+            min-width: auto;
+            padding: 10px 20px;
+            font-size: 14px;
+          "
+        >
+          ← Back
+        </button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.className = "toast show";
+        setTimeout(() => {
+          toast.className = "toast";
+        }, 2500);
+      }
+
+      function showCities() {
+        document.getElementById("mode-buttons").style.display = "none";
+        document.getElementById("city-buttons").style.display = "block";
+        document.getElementById("main-title").textContent = "Select a City";
+        document.getElementById("subtitle").textContent =
+          "Choose your nearest location";
+      }
+
+      function backToModes() {
+        document.getElementById("mode-buttons").style.display = "block";
+        document.getElementById("city-buttons").style.display = "none";
+        document.getElementById("main-title").textContent = "Harvestify";
+        document.getElementById("subtitle").textContent =
+          "Select your preferred mode to continue";
+        clearSelectedCity();
+      }
+
+      function confirmCity(event, cityName) {
+        event.preventDefault();
+        clearSelectedCity();
+        event.currentTarget.classList.add("selected");
+        showToast(`You selected ${cityName}`);
+        if (confirm(`Do you want to navigate to ${cityName}?`)) {
+          window.location.href = event.currentTarget.href;
+        }
+      }
+
+      function clearSelectedCity() {
+        document
+          .querySelectorAll(".city-btn.selected")
+          .forEach((btn) => btn.classList.remove("selected"));
+      }
+    </script>
+  </body>
+</html>

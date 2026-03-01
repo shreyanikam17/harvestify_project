@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Automatic and Manual Buttons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      background-color: #f4f4f4;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      margin: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* Manual Button as Link */
+    .manual-btn {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .manual-btn:hover {
+      background-color: #2980b9;
+    }
+
+    /* Automatic Button */
+    .auto-btn {
+      background-color: #2ecc71;
+      color: white;
+      animation: pulse 1.5s infinite;
+    }
+
+    .auto-btn:hover {
+      background-color: #5b27ae;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.03); opacity: 0.9; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Location Buttons (hidden initially) */
+    .location-buttons {
+      margin-top: 20px;
+      display: none; /* hidden by default */
+    }
+    .color-button{
+        color: blue;
+    }
+
+    /* Link styled as button */
+    .location-link {
+      display: block;
+      margin: 8px auto;
+      background-color: #27ae60;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      width: 150px;
+      transition: background-color 0.3s ease;
+    }
+
+    .location-link:hover {
+      background-color: #1e2f84;
+    }
+
+    .location-btn {
+      display: block;
+      margin: 8px auto;
+      background-color: #275bae;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      width: 150px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .location-btn:hover {
+      background-color: #4f8e7d;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Automatic Button -->
+  <button class="btn auto-btn" onclick="showLocationButtons()">Automatic Button</button>
+
+  <!-- Hidden Location Buttons -->
+  <div class="location-buttons" id="locations">
+  <div  class="color-button " id="color">
+    <!-- Kolhapur as a link to kolhapur.html -->
+    <a href="kolhapur.html" class="location-link">Kolhapur</a>
+     
+    <!-- Kolhapur as a link to kolhapur.html -->
+    <a href="sangali.html" class="location-link">Sangali</a>
+
+     <!-- Kolhapur as a link to kolhapur.html -->
+     <a href="satara.html" class="location-link">Satara</a>
+     
+    <!-- Kolhapur as a link to kolhapur.html -->
+    <a href="pune.html" class="location-link">Pune</a>
+    </div>
+  <br>
+
+
+    <button class="button manual-btn" onclick="backToModes()" style="margin-top:20px; min-width: auto; padding: 10px 20px; font-size: 14px;">
+        ← Back
+      </button>
+
+    
+    
+  </div>
+
+  <!-- Manual Button linking to another file -->
+  <br>
+  <a href="about.html" class="btn manual-btn">Manual Button</a>
+
+  <script>
+    function showLocationButtons() {
+      const locationDiv = document.getElementById("locations");
+      locationDiv.style.display = "block"; // show the buttons
+    }
+  </script>
+
+</body>
+</html>

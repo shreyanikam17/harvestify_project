@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>About Us - Harvestify</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        height: 100%;
+        background: #f9f9f9;
+        scroll-behavior: smooth;
+      }
+      /* Navbar */
+
+      .navbar {
+        width: 100%;
+        background: rgba(46, 46, 46, 0.95);
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        z-index: 3;
+        transition: background 0.3s;
+      }
+
+      .navbar.scrolled {
+        background: #111;
+      }
+
+      .navbar ul {
+        list-style: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        margin-right: 60px;
+      }
+
+      .navbar ul li {
+        margin-left: 20px;
+      }
+
+      .navbar .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar .logo img {
+        width: 40px;
+        margin-right: 10px;
+      }
+
+      .navbar ul li a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        transition: color 0.3s, border-bottom 0.3s;
+      }
+
+      .navbar ul li a:hover {
+        color: #76c043;
+        border-bottom: 2px solid #76c043;
+      }
+      /* Hero */
+
+      .hero {
+        background: url("https://image.shutterstock.com/image-photo/lush-rice-paddy-field-neat-260nw-2499404003.jpg")
+          no-repeat center center/cover;
+        height: 50vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        position: relative;
+        margin-top: 60px;
+        overflow: hidden;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+      }
+
+      .hero h1 {
+        position: relative;
+        z-index: 2;
+        font-size: 3em;
+        letter-spacing: 2px;
+        animation: fadeInDown 2s ease;
+      }
+      /* About Section */
+
+      .about {
+        padding: 60px 20px;
+        max-width: 1000px;
+        margin: auto;
+        text-align: center;
+      }
+
+      .about h2 {
+        color: #76c043;
+        margin-bottom: 20px;
+        font-size: 28px;
+        position: relative;
+        animation: fadeIn 2s ease;
+      }
+
+      .about p {
+        color: #444;
+        font-size: 16px;
+        line-height: 1.6;
+        animation: fadeIn 2.5s ease;
+      }
+      /* Mission & Vision */
+
+      .mission-vision {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+      }
+
+      .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        min-width: 250px;
+        max-width: 450px;
+        text-align: left;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: all 0.8s ease;
+      }
+
+      .card h3 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .card p {
+        color: #555;
+        font-size: 14px;
+      }
+
+      .card.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      /* Team Section */
+
+      .team {
+        margin-top: 60px;
+        text-align: center;
+      }
+
+      .team h2 {
+        margin-bottom: 30px;
+        color: #76c043;
+      }
+
+      .team-members {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .member {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        width: 220px;
+        text-align: center;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .member img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
+      .member h4 {
+        margin: 10px 0 5px;
+      }
+
+      .member p {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .member:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.2);
+      }
+      /* Footer */
+
+      footer {
+        background: #111;
+        color: #ccc;
+        padding: 40px 20px;
+        text-align: center;
+        margin-top: 60px;
+      }
+
+      footer h3 {
+        color: #76c043;
+        margin-bottom: 10px;
+      }
+      /* Animations */
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+      <div class="logo">
+        <img src="logo.png" alt="Logo" />
+        <h2 style="color: white">HARVESTIFY</h2>
+      </div>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="second.html">Soil Analysis</a></li>
+        <li><a href="fertilizer.html">Fertilizer recommendations</a></li>
+      </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+      <div class="overlay"></div>
+      <h1>About Us</h1>
+    </div>
+
+    <!-- About Section -->
+    <div class="about">
+      <h2>Who We Are</h2>
+      <p>
+        SoilMetrics Visualization is a smart farming platform designed to
+        empower farmers with actionable insights. We combine soil analysis, crop
+        recommendations, and environmental data to make farming smarter, more
+        efficient, and sustainable.
+      </p>
+
+      <!-- Mission & Vision -->
+      <div class="mission-vision">
+        <div class="card">
+          <h3>Our Mission 🎯</h3>
+          <p>
+            To help farmers make data-driven decisions that improve
+            productivity, reduce costs, and ensure food security.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Our Vision 📌</h3>
+          <p>
+            To create a future where technology and agriculture work hand in
+            hand for sustainable farming and better livelihoods.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <h3>SoilMetrics Visualization</h3>
+      <p>🌱 An Environmental Intelligence Startup 🚜</p>
+    </footer>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+      // Navbar color change on scroll
+      window.addEventListener("scroll", function () {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Scroll reveal for mission/vision cards
+      const cards = document.querySelectorAll(".card");
+      window.addEventListener("scroll", () => {
+        cards.forEach((card) => {
+          const cardTop = card.getBoundingClientRect().top;
+          if (cardTop < window.innerHeight - 100) {
+            card.classList.add("show");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
